@@ -6,7 +6,7 @@
  * @return {string}
  *         A string representation of the table data
  */
- const visualize = (data) => {
+const visualize = (data) => {
 
   // Convert all cell values into strings
   let headers = data.headers.map(header => String(header));
@@ -31,16 +31,18 @@
   // Construct the string representations of each row
   let rows = tableRows
     .map(row => row.map((value, col) => ` ${value} ${" ".repeat(maxWidths[col] - value.length)}`))
-    .map(row => row.join("|")).map(row => `|${row}|`)
+    .map(row => row.join("|")).map(row => `|${row}|`);
 
   // Construct and insert horizontal dividers
   const div = rows[0].split("").map(e => e === "|" ? "+" : "-").join("");
-  rows.splice(0, 0, div)
+  rows.splice(0, 0, div);
   rows.splice(2, 0, div);
   rows.push(div);
 
   return rows.join("\n");
 
-}
+};
 
-console.log(visualize({"headers": ["Apple", "Banana", "Car"], "values": [[1, 2, 12], [3, 4, 7], [5, 0, null]]}));
+$(document).ready(function() {
+
+});
