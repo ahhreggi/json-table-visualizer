@@ -67,7 +67,7 @@ const isJSON = (string) => {
  * @return {Object|string}
  *         The parsed JSON object or a string containing an error code
  */
-const validateData = (string) => {
+const getData = (string) => {
   if (isJSON(string)) {
     const data = JSON.parse(string);
     // Data must be an object with headers and values
@@ -75,14 +75,14 @@ const validateData = (string) => {
       if ("headers" in data && "values" in data) {
         // All rows must contain the same number of values
         const length = data["headers"].length;
-        const validTypes = ["string", "number", "boolean", "null", "undefined"];
+        const validTypes = ["string", "number", "boolean", "undefined"];
         for (const row of data["values"]) {
           if (row.length !== length) {
             return "4"
           }
           for (const value of row) {
-            if (!validTypes.includes(typeof value)) {
-              return "5"
+            if (value !== null && !validTypes.includes(typeof value)) {
+              return "5";
             }
           }
         }
@@ -102,13 +102,13 @@ const validateData = (string) => {
  * @return {string|false}
  *         The corresponding error message or false if nonexistent
  */
-const errorCode = (code) => {
+const getError = (code) => {
   const errors = {
     "1": "invalid JSON",
     "2": "invalid object",
     "3": "object must contain 'headers' and 'values'",
-    "4": "all rows must contain the same number of values",
-    "5": "all values must be a string, number, boolean, null, or undefined"
+    "4": "rows must contain the same number of values",
+    "5": "values must be a double-quoted string, number, boolean, null, or undefined"
   }
   return errors[code] || false;
 }
@@ -120,8 +120,10 @@ $(document).ready(function() {
 
   form.on("submit", function(event) {
     event.preventDefault();
-    const data = inputField.val();
-    alert(validateData(data));
+    const data = getData(inputField.val());
+    if (typeof data === "string") {
+      alert(getError(data))
+    }
   });
 
 });
