@@ -2,7 +2,6 @@
  * Visualizes a set of table data
  * @param  {{headers: Array, values: Array.<Array>}} data
  *         An object containing the headers and values of a table
- *         Each row must contain the same number of values
  * @return {string}
  *         A string representation of the table data
  */
@@ -40,6 +39,40 @@
   rows.push(div);
 
   return rows.join("\n");
+
+};
+
+/**
+ * Visualizes a set of nested table data
+ * @param  {{headers: Object, rows: Object}} data
+ *         An object containing the headers and values of multiple tables
+ * @return {Object}
+ *         An object containing string representations of each table
+ */
+ const visualizeNested = (data) => {
+
+  // Convert all cell values into strings
+  const allHeaders = data.headers
+  for (const headers in allHeaders) {
+    allHeaders[headers] = allHeaders[headers].map(header => String(header));
+  }
+  const rows = data.rows
+  for (const values in rows) {
+    rows[values] = rows[values].map(values => values.map(value => String(value)));
+  }
+
+  const tableNames = Object.keys(rows); // VALIDATION: check that keys for allHeaders and rows are the same
+
+  const tables = {};
+
+  for (const tableName of tableNames) {
+    const headers = data["headers"][tableName];
+    const values = data["rows"][tableName];
+    const tableData = { headers, values }
+    tables[tableName] = visualize(tableData);
+  }
+
+  return tables;
 
 };
 
