@@ -76,7 +76,7 @@ const getData = (string) => {
     if (typeof data === "object") {
       if ("headers" in data) {
         // If there is a "values" key, the data is not nested
-        if ("values" in data) {
+        if ("values" in data && !("rows" in data)) {
           // All rows must contain the same number of values
           const length = data["headers"].length;
           const validTypes = ["string", "number", "boolean", "undefined"];
@@ -92,7 +92,7 @@ const getData = (string) => {
           }
           return data;
           // If there is a "rows" key, the data is nested
-        } else if ("rows" in data) {
+        } else if ("rows" in data && !("values" in data)) {
           const allHeaders = Object.keys(data.headers);
           const rows = Object.keys(data.rows);
           if (deepEqual(allHeaders, rows)) {
@@ -182,6 +182,11 @@ const clearErrors = () => {
 
   $("#usage1 span").css("color", "");
   $("#usage2 span").css("color", "");
+  $("#usage1 p").css("color", "");
+  $("#usage2 p").css("color", "");
+  showElement($("#one-table"), true);
+  showElement($("#multiple-tables"), true);
+  showElement($("#instructions-header"), true);
 
 };
 
@@ -211,14 +216,19 @@ $(document).ready(function() {
       const data = getData(formData);
       if (typeof data === "string") {
         enableSubmit(false);
-        return flashError(data);
+        flashError(data);
       } else {
-        console.log(data);
         const testValue = Object.values(data)[0];
         if (Array.isArray(testValue)) {
           $("#usage1 .error").css("color", "rgb(25, 255, 25)");
+          $("#usage1 p").css("color", "rgb(25, 255, 25)");
+          showElement($("#multiple-tables"), false);
+          showElement($("#instructions-header"), false);
         } else if (typeof testValue === "object") {
           $("#usage2 .error").css("color", "rgb(25, 255, 25)");
+          $("#usage2 p").css("color", "rgb(25, 255, 25)");
+          showElement($("#one-table"), false);
+          showElement($("#instructions-header"), false);
         }
         validData = true;
         enableSubmit(true);

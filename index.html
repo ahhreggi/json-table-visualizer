@@ -12,28 +12,38 @@
   <script type="text/javascript" src="scripts/visualize.js"></script>
 </head>
 
-<body class="container mt-4 px-5 pt-3 pb-5">
+<body class="mt-4 px-5 pt-3 pb-5 d-flex flex-column justify-content-flex-start col-12 col-lg-11 col-xl-10">
 
   <h1 class="display-4">JSON Table Visualizer</h1>
 
+  <!-- Data Form -->
+  <form id="data-form" class="d-flex flex-column">
+    <p class="lead" for="tableData">Enter your table data:</p>
+    <div class="form-inline d-flex flex-row">
+      <input type="text" class="form-control col" id="tableData" aria-describedby="tableData" placeholder="{&quot;headers&quot;: [&quot;Letter&quot;, &quot;Number&quot;], &quot;values&quot;: [[&quot;A&quot;, 1], [&quot;B&quot;, 2], [&quot;C&quot;, 3]]}">
+      <button id="submit" type="submit" class="btn btn-primary ml-2" disabled>Visualize!</button>
+      <button id="clear" type="button" class="btn btn-danger ml-2">Clear</button>
+    </div>
+  </form>
+
   <!-- Instructions -->
-  <section id="instructions" class="d-flex flex-column mb-3">
-    <p class="lead">Visualizes table data provided as a JSON in one of the following formats:</p>
+  <section id="instructions" class="d-flex flex-column my-3">
+    <p id="instructions-header" class="lead">Table data must be provided as a JSON in one of the following formats:</p>
     <!-- One table -->
-    <div class="d-flex flex-row border col align-items-center">
-      <pre class="col-3"><code>
-    {
-      "headers": [
-        "Column A",
-        "Column B",
-        "Column C"
-      ],
-      "values": [
-        [1, 2, true],
-        [4, "5", false],
-        [7, 8, null]
-      ]
-    }</code></pre>
+    <div id="one-table" class="d-flex flex-row border col align-items-center mb-3">
+          <pre class="col-3"><code>
+        {
+          "headers": [
+            "Column A",
+            "Column B",
+            "Column C"
+          ],
+          "values": [
+            [1, 2, true],
+            [4, "5", false],
+            [7, 8, null]
+          ]
+        }</code></pre>
       <div id="usage1" class="lead d-flex flex-column justify-content-center ml-5 my-4">
         <p class="h4">One Table</p>
         <span>- Column A contains values 1, 4, true</span>
@@ -48,32 +58,32 @@
       </div>
     </div>
     <!-- Multiple tables -->
-    <div class="d-flex flex-row border col align-items-center mt-3">
-      <pre class="col-3"><code>
-    {
-      "headers": {
-        "Table 1": [
-          "Column A",
-          "Column B",
-          "Column C"
-        ],
-        "Table 2": [
-          "Column X",
-          "Column Y",
-          "Column Z"]
-      },
-      "rows": {
-        "Table 1": [
-          [1, 2, 3],
-          [4, 5, 6],
-          [7, 8, 9]
-        ],
-        "Table 2": [
-          ["A", "B", "C"],
-          ["D", "E", "F"]
-        ]
-      }
-    }</code></pre>
+    <div id="multiple-tables" class="d-flex flex-row border col align-items-center mb-3">
+          <pre class="col-3"><code>
+        {
+          "headers": {
+            "Table 1": [
+              "Column A",
+              "Column B",
+              "Column C"
+            ],
+            "Table 2": [
+              "Column X",
+              "Column Y",
+              "Column Z"]
+          },
+          "rows": {
+            "Table 1": [
+              [1, 2, 3],
+              [4, 5, 6],
+              [7, 8, 9]
+            ],
+            "Table 2": [
+              ["A", "B", "C"],
+              ["D", "E", "F"]
+            ]
+          }
+        }</code></pre>
       <div id="usage2" class="lead d-flex flex-column justify-content-center ml-5">
         <p class="h4">Multiple Tables</p>
         <span>Table 1 contains columns A, B, C</span>
@@ -103,17 +113,9 @@
     </div>
   </section>
 
-  <button id="back-btn" type="button" class="btn btn-primary d-none">Go Back</button>
-
-  <!-- Data Form -->
-  <form id="data-form" class="d-flex flex-column">
-    <p class="lead" for="tableData">Enter your table data:</p>
-    <div class="form-inline d-flex flex-row">
-      <input type="text" class="form-control col" id="tableData" aria-describedby="tableData" placeholder="{&quot;headers&quot;: [&quot;Letter&quot;, &quot;Number&quot;], &quot;values&quot;: [[&quot;A&quot;, 1], [&quot;B&quot;, 2], [&quot;C&quot;, 3]]}">
-      <button id="submit" type="submit" class="btn btn-primary ml-2" disabled>Visualize!</button>
-      <button id="clear" type="button" class="btn btn-danger ml-2">Clear</button>
-    </div>
-  </form>
+  <div class="row pl-3">
+    <button id="back-btn" type="button" class="btn btn-primary d-none">Go Back</button>
+  </div>
 
 </body>
 
