@@ -5,7 +5,7 @@
  * @return {string}
  *         A string representation of the table data
  */
- const visualize = (data) => {
+const visualize = (data) => {
 
   // Convert all cell values into strings
   let headers = data.headers.map(header => String(header));
@@ -49,26 +49,27 @@
  * @return {Object}
  *         An object containing string representations of each table
  */
- const visualizeNested = (data) => {
+const visualizeNested = (data) => {
 
   // Convert all cell values into strings
-  const allHeaders = data.headers
+  const allHeaders = data.headers;
   for (const headers in allHeaders) {
     allHeaders[headers] = allHeaders[headers].map(header => String(header));
   }
-  const rows = data.rows
+  const rows = data.rows;
   for (const values in rows) {
     rows[values] = rows[values].map(values => values.map(value => String(value)));
   }
 
-  const tableNames = Object.keys(rows); // VALIDATION: check that keys for allHeaders and rows are the same
+  const tableNames = Object.keys(allHeaders); // VALIDATION: check that keys for allHeaders and rows are the same
 
   const tables = {};
 
+  // Generate string representations for for each table
   for (const tableName of tableNames) {
     const headers = data["headers"][tableName];
     const values = data["rows"][tableName];
-    const tableData = { headers, values }
+    const tableData = { headers, values };
     tables[tableName] = visualize(tableData);
   }
 
@@ -99,8 +100,8 @@ const isJSON = (string) => {
  * an error code
  * @param  {string} string
  *         A JSON string
- * @return {Object|string}
- *         The parsed JSON object or a string containing an error code
+ * @return {Object|Array|string}
+ *         The parsed JSON object, an array of parsed JSON objects, or a string containing an error code
  */
 const getData = (string) => {
 
@@ -109,6 +110,7 @@ const getData = (string) => {
     // Data must be an object with headers and values
     if (typeof data === "object") {
       if ("headers" in data) {
+        // If there is a "values" key, the data is not nested
         if ("values" in data) {
           // All rows must contain the same number of values
           const length = data["headers"].length;
@@ -124,8 +126,30 @@ const getData = (string) => {
             }
           }
           return data;
+          // If there is a "rows" key, the data is nested
+        } else if ("rows" in data) {
+          const allHeaders = Object.keys(data.headers);
+          const rows = Object.keys(data.rows);
+          if (deepEqual(allHeaders, rows)) {
+            const allData = [];
+            const tableNames = Object.keys(data.headers);
+            for (const tableName of tableNames) {
+              const headers = data.headers[tableName];
+              const values = data.rows[tableName];
+              const tableJSON = JSON.stringify({ headers, values });
+              const tableData = getData(tableJSON);
+              // If the table data is invalid, return the error
+              if (typeof tableData === "string") {
+                return tableData;
+              } else {
+                allData.push(tableData);
+              }
+            }
+            return allData;
+          }
+          return ".error4"; // "headers" and "rows" must contain the same table names
         }
-        return ".error3"
+        return ".error3"; // Data must contain "values" or "rows" if nested
       }
       return ".error2";
     }
@@ -133,6 +157,23 @@ const getData = (string) => {
   }
   return ".error1";
 
+};
+
+// Returns true if the two given arrays are equal
+const deepEqual = (array1, array2) => {
+  if (array1.length !== array2.length) {
+    return false;
+  }
+  for (let i = 0; i < array1.length; i++) {
+    // If both items are arrays, check if they are equal
+    if (Array.isArray(array1[i]) && Array.isArray(array2[i])) {
+      return deepEqual(array1[i], array2[i]);
+    // Otherwise, compare the primitive values normally
+    } else if (array1[i] !== array2[i]) {
+      return false;
+    }
+  }
+  return true;
 };
 
 
@@ -183,13 +224,11 @@ const enableSubmit = (enable) => {
 
   if (enable) {
     $("#submit").removeAttr("disabled");
-    console.log("enabling")
   } else {
     $("#submit").prop("disabled", "true");
-    console.log("disabling")
   }
 
-}
+};
 
 $(document).ready(function() {
 
@@ -215,7 +254,7 @@ $(document).ready(function() {
     } else {
       enableSubmit(false);
     }
-  })
+  });
 
   // Submit handler
   form.on("submit", function(event) {
@@ -232,18 +271,24 @@ $(document).ready(function() {
     const data = getData(formData);
 
     // Display results
-    $("#resultCode").append(visualize(data));
-    showElement(instructions, false);
-    showElement(form, false);
-    showElement($("#result"), true);
-    showElement($("#back-btn"), true);
+
+    // If data is an array, there are multiple tables
+    if (Array.isArray(data)) {
+      console.log("NESTED DATA");
+      // If the data is not an array, there is one table
+    } else {
+      $("#resultCode").append(visualize(data));
+      showElement(instructions, false);
+      showElement(form, false);
+      showElement($("#result"), true);
+      showElement($("#back-btn"), true);
+    }
 
   });
 
   // Back button
   $("#back-btn").on("click", function() {
 
-    console.log("clearing");
     showElement(instructions, true);
     showElement(form, true);
     showElement($("#result"), false);
@@ -261,3 +306,11 @@ $(document).ready(function() {
   });
 
 });
+
+const nested = `{"headers":
+{"Playback":["session_id","customer_id","start_time","end_time"],
+"Ads":["ad_id","customer_id","timestamp"]},
+"rows":{"Playback":[[1,1,1,5],[2,1,15,23],[3,2,10,12],[4,2,17,28],[5,2,2,8]],
+"Ads":[[1,1,5],[2,2,15],[3,2,20]]}}`;
+
+console.log(getData(nested));

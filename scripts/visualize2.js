@@ -6,7 +6,7 @@
  * @return {string}
  *         A string representation of the table data
  */
- const visualize = (data) => {
+const visualize = (data) => {
 
   // Convert all cell values into strings
   let headers = data.headers.map(header => String(header));
@@ -51,14 +51,14 @@
  * @return {string}
  *         A string representation of the table data
  */
- const visualizeNested = (data) => {
+const visualizeNested = (data) => {
 
   // Convert all cell values into strings
-  const allHeaders = data.headers
+  const allHeaders = data.headers;
   for (const headers in allHeaders) {
     allHeaders[headers] = allHeaders[headers].map(header => String(header));
   }
-  const rows = data.rows
+  const rows = data.rows;
   for (const values in rows) {
     rows[values] = rows[values].map(values => values.map(value => String(value)));
   }
@@ -70,7 +70,7 @@
   for (const tableName of tableNames) {
     const headers = data["headers"][tableName];
     const values = data["rows"][tableName];
-    const tableData = { headers, values }
+    const tableData = { headers, values };
     tables[tableName] = visualize(tableData);
   }
 
@@ -88,6 +88,6 @@ const nested = {
     "Playback":[[1,1,1,5],[2,1,15,23],[3,2,10,12],[4,2,17,28],[5,2,2,8]],
     "Ads":[[1,1,5],[2,2,15],[3,2,20]]
   }
-}
+};
 
-console.log(visualizeNested(nested))
+console.log(visualizeNested(nested));
