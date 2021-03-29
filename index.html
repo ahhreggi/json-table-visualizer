@@ -29,19 +29,22 @@
     "Column C"
   ],
   "values": [
-    [1, 2, 3],
-    [4, 5, 6],
+    [1, 2, true],
+    [4, '5', false],
     [7, 8, null]
   ]
 }</code></pre>
       </div>
       <div class="lead d-flex flex-column justify-content-center ml-3">
+        <span>Column A contains values 1, 4, true</span>
+        <span>Column B contains values 2, '5', false</span>
+        <span>Column C contains values 7, 8, null</span>
+        <hr>
         <span>"headers" is an array of column names</span>
         <span>"values" is a nested array of row values</span>
-        <span>Column A contains values 1, 4, 7</span>
-        <span>Column B contains values 2, 5, 8</span>
-        <span>Column C contains values 7, 8, null</span>
         <span>All rows must contain the same number of values</span>
+        <span>All values must be a string, number, boolean, null, or undefined</span>
+
       </div>
     </section>
 

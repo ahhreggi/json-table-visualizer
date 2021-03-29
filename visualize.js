@@ -50,13 +50,67 @@ const visualize = (data) => {
  * @return {boolean}
  *         Whether or not the string is valid JSON
  */
-const validateJSON = (string) => {
+const isJSON = (string) => {
   try {
     JSON.parse(string);
   } catch (e) {
     return false;
   }
   return true;
+}
+
+/**
+ * Returns a table data object if the given string is valid, otherwise returns
+ * an error code
+ * @param  {string} string
+ *         A JSON string
+ * @return {Object|string}
+ *         The parsed JSON object or a string containing an error code
+ */
+const validateData = (string) => {
+  if (isJSON(string)) {
+    const data = JSON.parse(string);
+    // Data must be an object with headers and values
+    if (typeof data === "object") {
+      if ("headers" in data && "values" in data) {
+        // All rows must contain the same number of values
+        const length = data["headers"].length;
+        const validTypes = ["string", "number", "boolean", "null", "undefined"];
+        for (const row of data["values"]) {
+          if (row.length !== length) {
+            return "4"
+          }
+          for (const value of row) {
+            if (!validTypes.includes(typeof value)) {
+              return "5"
+            }
+          }
+        }
+        return data;
+      }
+      return "3"
+    }
+    return "2"
+  }
+  return "1"
+}
+
+/**
+ * Returns an error message given an error code
+ * @param  {string} code
+ *         An error code
+ * @return {string|false}
+ *         The corresponding error message or false if nonexistent
+ */
+const errorCode = (code) => {
+  const errors = {
+    "1": "invalid JSON",
+    "2": "invalid object",
+    "3": "object must contain 'headers' and 'values'",
+    "4": "all rows must contain the same number of values",
+    "5": "all values must be a string, number, boolean, null, or undefined"
+  }
+  return errors[code] || false;
 }
 
 $(document).ready(function() {
@@ -67,7 +121,7 @@ $(document).ready(function() {
   form.on("submit", function(event) {
     event.preventDefault();
     const data = inputField.val();
-    alert(typeof data);
+    alert(validateData(data));
   });
 
 });
