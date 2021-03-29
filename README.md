@@ -8,4 +8,4 @@
 
 This was specifically designed to help visualize input/output values for database problems on [Leetcode](https://leetcode.com/) (they use the specified format).
 
-<img src="./assets/jsonvis-screenshot.png" />
+<img src="./assets/screenshot.png" />
