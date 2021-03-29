@@ -1,0 +1,12 @@
+$white: rgb(231, 231, 231);
+$code: rgb(241, 241, 241);
+$bg-color: rgb(28, 26, 36);
+
+body {
+  background-color: $bg-color !important;
+  color: $white;
+}
+
+pre {
+  color: $code;
+}

@@ -57,7 +57,7 @@ const isJSON = (string) => {
     return false;
   }
   return true;
-}
+};
 
 /**
  * Returns a table data object if the given string is valid, otherwise returns
@@ -78,52 +78,100 @@ const getData = (string) => {
         const validTypes = ["string", "number", "boolean", "undefined"];
         for (const row of data["values"]) {
           if (row.length !== length) {
-            return "4"
+            return ".error3";
           }
           for (const value of row) {
             if (value !== null && !validTypes.includes(typeof value)) {
-              return "5";
+              return ".error4";
             }
           }
         }
         return data;
       }
-      return "3"
+      return ".error2";
     }
-    return "2"
+    return ".error1";
   }
-  return "1"
-}
+  return ".error1";
+};
 
-/**
- * Returns an error message given an error code
- * @param  {string} code
- *         An error code
- * @return {string|false}
- *         The corresponding error message or false if nonexistent
- */
-const getError = (code) => {
-  const errors = {
-    "1": "invalid JSON",
-    "2": "invalid object",
-    "3": "object must contain 'headers' and 'values'",
-    "4": "rows must contain the same number of values",
-    "5": "values must be a double-quoted string, number, boolean, null, or undefined"
+const flashError = (errorClass) => {
+  const errors = [".error1", ".error2", ".error3", ".error4"];
+  for (const error of errors) {
+    if (errorClass !== error) {
+      $(error).css("color", "rgb(41, 209, 41)"); // green
+    } else {
+      $(error).css("color", "rgb(250, 83, 83)"); // red
+      break;
+    }
   }
-  return errors[code] || false;
-}
+};
+
+const showElement = (element, show) => {
+  if (show) {
+    element.removeClass("d-none");
+    element.addClass("d-flex");
+  } else {
+    element.removeClass("d-flex");
+    element.addClass("d-none");
+  }
+};
+
+const clearForm = () => {
+  $("#data-form input").val("");
+};
+
+const clearErrors = () => {
+  $("#usage span").css("color", "");
+};
 
 $(document).ready(function() {
 
+  const instructions = $("#instructions");
   const form = $("#data-form");
   const inputField = $("#data-form input");
 
   form.on("submit", function(event) {
     event.preventDefault();
-    const data = getData(inputField.val());
+
+    // Clear all errors
+    clearErrors();
+
+    // Hide result
+    $("#resultCode").empty();
+    showElement($("#result"), false);
+
+    const formData = inputField.val();
+    if (formData.length < 1) return;
+    const data = getData(formData);
     if (typeof data === "string") {
-      alert(getError(data))
+      return flashError(data);
+    } else {
+      $("#usage .error").css("color", "rgb(9, 158, 9)");
     }
+
+    // Display results
+    $("#resultCode").append(visualize(data));
+    showElement(instructions, false);
+    showElement(form, false);
+    showElement($("#result"), true);
+    showElement($("#back-btn"), true);
+  });
+
+  $("#back-btn").on("click", function() {
+    console.log("clearing");
+    showElement(instructions, true);
+    showElement(form, true);
+    showElement($("#result"), false);
+    showElement($("#back-btn"), false);
+    $("#resultCode").empty();
+    clearErrors();
+
+  });
+
+  $("clear").on("click", function() {
+    clearForm();
+    clearErrors();
   });
 
 });
