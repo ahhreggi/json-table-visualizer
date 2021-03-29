@@ -1,6 +1,10 @@
-# Leetcode SQL Visualizer
+# JSON Table Visualizer
 
-Produces a table given a JSON string containing its headers and values.
+Visualizes a table given as a JSON string containing its headers and values. Built for Leetcode's SQL problems.
+
+Multi-table support coming soon. :)
+
+
 
 Example:
 ```
