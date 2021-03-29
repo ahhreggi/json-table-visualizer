@@ -1,6 +1,6 @@
 # JSON Table Visualizer
 
-Visualizes a table given as a JSON string containing its headers and values. Built for Leetcode's SQL problems.
+Visualizes a table given as a JSON string containing headers and row values. I built this specifically to help visualize input/output values for database problems on [Leetcode](https://leetcode.com/) (they use the specified format).
 
 <b><a href="https://ahhreggi.github.io/json-table-visualizer/" target="_blank">
    » View Live Project «
@@ -8,21 +8,5 @@ Visualizes a table given as a JSON string containing its headers and values. Bui
 
 Multi-table support coming soon. :)
 
-
-## Sample Usage
-
-
-Input:
-```
-{"headers": ["A", "B"], "values": [[1, 2], [3, 4], [5, 6]]}
-```
-Output:
-```
-+---+---+
-| A | B |
-+---+---+
-| 1 | 2 |
-| 3 | 4 |
-| 5 | 6 |
-+---+---+
-```
+<img src="./assets/screenshot1.png" />
+<img src="./assets/screenshot2.png" />
