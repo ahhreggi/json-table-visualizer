@@ -18,9 +18,10 @@
 
   <!-- Instructions -->
   <section id="instructions" class="d-flex flex-column mb-3">
-    <p class="lead">Visualizes table data provided as a JSON in the following format:</p>
-    <div class="d-flex flex-row border col">
-      <pre><code>
+    <p class="lead">Visualizes table data provided as a JSON in one of the following formats:</p>
+    <!-- One table -->
+    <div class="d-flex flex-row border col align-items-center">
+      <pre class="col-3"><code>
     {
       "headers": [
         "Column A",
@@ -33,16 +34,63 @@
         [7, 8, null]
       ]
     }</code></pre>
-      <div id="usage" class="lead d-flex flex-column justify-content-center ml-5">
-        <span>Column A contains values 1, 4, true</span>
-        <span>Column B contains values 2, "5", false</span>
-        <span>Column C contains values 7, 8, null</span>
+      <div id="usage1" class="lead d-flex flex-column justify-content-center ml-5 my-4">
+        <p class="h4">One Table</p>
+        <span>- Column A contains values 1, 4, true</span>
+        <span>- Column B contains values 2, "5", false</span>
+        <span>- Column C contains values 7, 8, null</span>
         <hr>
         <span class="error error1">Data must be a valid JSON object</span>
         <span class="error error2">Data must contain "headers" (array of column names)</span>
         <span class="error error3">Data must contain "values" (a nested array of row values)</span>
         <span class="error error4">Rows must contain the same number of values</span>
         <span class="error error5">Values must be a string, number, boolean, or null</span>
+      </div>
+    </div>
+    <!-- Multiple tables -->
+    <div class="d-flex flex-row border col align-items-center mt-3">
+      <pre class="col-3"><code>
+    {
+      "headers": {
+        "Table 1": [
+          "Column A",
+          "Column B",
+          "Column C"
+        ],
+        "Table 2": [
+          "Column X",
+          "Column Y",
+          "Column Z"]
+      },
+      "rows": {
+        "Table 1": [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9]
+        ],
+        "Table 2": [
+          ["A", "B", "C"],
+          ["D", "E", "F"]
+        ]
+      }
+    }</code></pre>
+      <div id="usage2" class="lead d-flex flex-column justify-content-center ml-5">
+        <p class="h4">Multiple Tables</p>
+        <span>Table 1 contains columns A, B, C</span>
+        <span>- Column A contains values 1, 4, 7</span>
+        <span>- Column B contains values 2, 5, 8</span>
+        <span>- Column C contains values 7, 8, 9</span>
+        <span>Table 2 contains columns X, Y, Z</span>
+        <span>- Column X contains values "A", "D"</span>
+        <span>- Column Y contains values "B", "E"</span>
+        <span>- Column Z contains values "C", "F"</span>
+        <hr>
+        <span class="error error1">Data must be a valid JSON object</span>
+        <span class="error error2">Data must contain "headers" (object of arrays of column names)</span>
+        <span class="error error3">Data must contain "rows" (object of nested arrays of row values)</span>
+        <span class="error error4">Rows of one table must contain the same number of values</span>
+        <span class="error error5">Values must be a string, number, boolean, or null</span>
+        <span class="error error6">Data must contain the same table names for "headers" and "rows"</span>
       </div>
     </div>
   </section>
