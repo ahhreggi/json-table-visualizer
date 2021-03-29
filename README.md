@@ -1,14 +1,11 @@
-# JSON Table Visualizer
+# 🔎 JSON Table Visualizer
 
-Visualizes a table given as a JSON string containing headers and row values. Dynamically checks for input/formatting errors as you enter data.
-
-I built this specifically to help visualize input/output values for database problems on [Leetcode](https://leetcode.com/) (they use the specified format).
+<b>JSON Table Visualizer</b> is a responsive single-page application that converts JSON strings containing table headers and row values into plain text tables. Supports single and multi-table data and dynamically checks for input/formatting errors as you type. Built with HTML, CSS/[SASS](https://sass-lang.com/), JavaScript, and [jQuery](https://jquery.com/).
 
 <b><a href="https://ahhreggi.github.io/json-table-visualizer/" target="_blank">
    » View Live Project «
 </a></b>
 
-Multi-table support coming soon. :)
+This was specifically designed to help visualize input/output values for database problems on [Leetcode](https://leetcode.com/) (they use the specified format).
 
-<img src="./assets/screenshot1.png" />
-<img src="./assets/screenshot2.png" />
+<img src="./assets/screenshot.png" />

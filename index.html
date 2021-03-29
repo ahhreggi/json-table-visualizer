@@ -12,7 +12,7 @@
   <script type="text/javascript" src="scripts/visualize.js"></script>
 </head>
 
-<body class="mt-4 px-5 pt-3 pb-5 d-flex flex-column justify-content-flex-start col-12 col-lg-11 col-xl-10">
+<body class="mt-4 px-5 pt-3 pb-5 d-flex flex-column justify-content-flex-start col-12 col-xl-11">
 
   <h1 class="display-4">JSON Table Visualizer</h1>
 
@@ -30,21 +30,8 @@
   <section id="instructions" class="d-flex flex-column my-3">
     <p id="instructions-header" class="lead">Table data must be provided as a JSON in one of the following formats:</p>
     <!-- One table -->
-    <div id="one-table" class="d-flex flex-row border col align-items-center mb-3">
-          <pre class="col-3"><code>
-        {
-          "headers": [
-            "Column A",
-            "Column B",
-            "Column C"
-          ],
-          "values": [
-            [1, 2, true],
-            [4, "5", false],
-            [7, 8, null]
-          ]
-        }</code></pre>
-      <div id="usage1" class="lead d-flex flex-column justify-content-center ml-5 my-4">
+    <div id="one-table" class="d-flex flex-column flex-xl-row justify-content-flex-start border col align-items-flex-start align-items-xl-center mb-3">
+      <div id="usage1" class="lead d-flex flex-column justify-content-center col-12 col-xl-5 my-4">
         <p class="h4">One Table</p>
         <span>- Column A contains values 1, 4, true</span>
         <span>- Column B contains values 2, "5", false</span>
@@ -56,35 +43,32 @@
         <span class="error error4">Rows must contain the same number of values</span>
         <span class="error error5">Values must be a string, number, boolean, or null</span>
       </div>
+<pre class="col-12 col-sm-6 col-md-5 col-xl-3"><code>
+  {
+    "headers": [
+      "Column A",
+      "Column B",
+      "Column C"
+    ],
+    "values": [
+      [1, 2, true],
+      [4, "5", false],
+      [7, 8, null]
+    ]
+  }</code></pre>
+<pre><code>
+  +----------+----------+----------+
+  | Column A | Column B | Column C |
+  +----------+----------+----------+
+  | 1        | 2        | true     |
+  | 4        | 5        | false    |
+  | 7        | 8        | null     |
+  +----------+----------+----------+
+</code></pre>
     </div>
     <!-- Multiple tables -->
-    <div id="multiple-tables" class="d-flex flex-row border col align-items-center mb-3">
-          <pre class="col-3"><code>
-        {
-          "headers": {
-            "Table 1": [
-              "Column A",
-              "Column B",
-              "Column C"
-            ],
-            "Table 2": [
-              "Column X",
-              "Column Y",
-              "Column Z"]
-          },
-          "rows": {
-            "Table 1": [
-              [1, 2, 3],
-              [4, 5, 6],
-              [7, 8, 9]
-            ],
-            "Table 2": [
-              ["A", "B", "C"],
-              ["D", "E", "F"]
-            ]
-          }
-        }</code></pre>
-      <div id="usage2" class="lead d-flex flex-column justify-content-center ml-5">
+    <div id="multiple-tables" class="d-flex flex-column flex-xl-row justify-content-flex-start border col align-items-flex-start align-items-xl-center mb-3">
+      <div id="usage2" class="lead d-flex flex-column justify-content-center col-12 col-xl-5 my-4">
         <p class="h4">Multiple Tables</p>
         <span>Table 1 contains columns A, B, C</span>
         <span>- Column A contains values 1, 4, 7</span>
@@ -102,11 +86,56 @@
         <span class="error error5">Values must be a string, number, boolean, or null</span>
         <span class="error error6">Data must contain the same table names for "headers" and "rows"</span>
       </div>
+<pre class="col-12 col-sm-6 col-md-5 col-xl-3"><code>
+  {
+    "headers": {
+      "Table 1": [
+        "Column A",
+        "Column B",
+        "Column C"
+      ],
+      "Table 2": [
+        "Column X",
+        "Column Y",
+        "Column Z"
+      ]
+    },
+    "rows": {
+      "Table 1": [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+      ],
+      "Table 2": [
+        ["A", "B", "C"],
+        ["D", "E", "F"]
+      ]
+    }
+  }</code></pre>
+<pre><code>
+  Table 1
+  +----------+----------+----------+
+  | Column A | Column B | Column C |
+  +----------+----------+----------+
+  | 1        | 2        | 3        |
+  | 4        | 5        | 6        |
+  | 7        | 8        | 9        |
+  +----------+----------+----------+
+
+  Table 2
+  +----------+----------+----------+
+  | Column X | Column Y | Column Z |
+  +----------+----------+----------+
+  | A        | B        | C        |
+  | D        | E        | F        |
+  +----------+----------+----------+
+</code></pre>
+
     </div>
   </section>
 
   <!-- Output -->
-  <section id="result" class="d-none flex-column lead mt-2 mb-2">
+  <section id="result" class="d-none flex-column mt-2 mb-2">
     <p class="lead">Result:</p>
     <div class="d-flex flex-row">
       <pre id="resultCode"></pre>
