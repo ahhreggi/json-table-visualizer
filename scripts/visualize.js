@@ -6,7 +6,7 @@
  * @return {string}
  *         A string representation of the table data
  */
-const visualize = (data) => {
+ const visualize = (data) => {
 
   // Convert all cell values into strings
   let headers = data.headers.map(header => String(header));
@@ -51,12 +51,14 @@ const visualize = (data) => {
  *         Whether or not the string is valid JSON
  */
 const isJSON = (string) => {
+
   try {
     JSON.parse(string);
   } catch (e) {
     return false;
   }
   return true;
+
 };
 
 /**
@@ -68,6 +70,7 @@ const isJSON = (string) => {
  *         The parsed JSON object or a string containing an error code
  */
 const getData = (string) => {
+
   if (isJSON(string)) {
     const data = JSON.parse(string);
     // Data must be an object with headers and values
@@ -96,9 +99,13 @@ const getData = (string) => {
     return ".error1";
   }
   return ".error1";
+
 };
 
+
+// Highlights the error message associated with the given class
 const flashError = (errorClass) => {
+
   const errors = [".error1", ".error2", ".error3", ".error4", ".error5"];
   for (const error of errors) {
     if (errorClass !== error) {
@@ -108,9 +115,12 @@ const flashError = (errorClass) => {
       break;
     }
   }
+
 };
 
+// Toggles an element's visibility
 const showElement = (element, show) => {
+
   if (show) {
     element.removeClass("d-none");
     element.addClass("d-flex");
@@ -118,26 +128,34 @@ const showElement = (element, show) => {
     element.removeClass("d-flex");
     element.addClass("d-none");
   }
+
 };
 
+// Clears the input form
 const clearForm = () => {
+
   $("#data-form input").val("");
+
 };
 
+// Clears all instruction highlights
 const clearErrors = () => {
+
   $("#usage span").css("color", "");
+
 };
 
+// Toggles the submit button
 const enableSubmit = (enable) => {
-  setTimeout(() => {
-    if (enable) {
-      $("#submit").removeAttr("disabled");
-      console.log("enabling")
-    } else {
-      $("#submit").prop("disabled", "true");
-      console.log("disabling")
-    }
-  }, 10)
+
+  if (enable) {
+    $("#submit").removeAttr("disabled");
+    console.log("enabling")
+  } else {
+    $("#submit").prop("disabled", "true");
+    console.log("disabling")
+  }
+
 }
 
 $(document).ready(function() {
@@ -166,12 +184,13 @@ $(document).ready(function() {
     }
   })
 
+  // Submit handler
   form.on("submit", function(event) {
 
     event.preventDefault();
     if (!validData) return;
 
-    // Hide result
+    // Hide results
     $("#resultCode").empty();
     showElement($("#result"), false);
 
@@ -185,9 +204,12 @@ $(document).ready(function() {
     showElement(form, false);
     showElement($("#result"), true);
     showElement($("#back-btn"), true);
+
   });
 
+  // Back button
   $("#back-btn").on("click", function() {
+
     console.log("clearing");
     showElement(instructions, true);
     showElement(form, true);
@@ -197,9 +219,12 @@ $(document).ready(function() {
 
   });
 
+  // Clear button
   $("#clear").on("click", function() {
+
     clearForm();
     clearErrors();
+
   });
 
 });
