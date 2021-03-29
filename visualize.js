@@ -43,6 +43,31 @@ const visualize = (data) => {
 
 };
 
+/**
+ * Returns true if a string is valid JSON, false otherwise
+ * @param  {string} string
+ *         A JSON string
+ * @return {boolean}
+ *         Whether or not the string is valid JSON
+ */
+const validateJSON = (string) => {
+  try {
+    JSON.parse(string);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
 $(document).ready(function() {
+
+  const form = $("#data-form");
+  const inputField = $("#data-form input");
+
+  form.on("submit", function(event) {
+    event.preventDefault();
+    const data = inputField.val();
+    alert(typeof data);
+  });
 
 });

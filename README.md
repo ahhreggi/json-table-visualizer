@@ -1,6 +1,6 @@
 # Leetcode SQL Visualizer
 
-Produces a table given an object containing its headers and values.
+Produces a table given a JSON string containing its headers and values.
 
 Example:
 ```
