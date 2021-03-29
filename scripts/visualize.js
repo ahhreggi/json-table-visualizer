@@ -72,21 +72,24 @@ const getData = (string) => {
     const data = JSON.parse(string);
     // Data must be an object with headers and values
     if (typeof data === "object") {
-      if ("headers" in data && "values" in data) {
-        // All rows must contain the same number of values
-        const length = data["headers"].length;
-        const validTypes = ["string", "number", "boolean", "undefined"];
-        for (const row of data["values"]) {
-          if (row.length !== length) {
-            return ".error3";
-          }
-          for (const value of row) {
-            if (value !== null && !validTypes.includes(typeof value)) {
+      if ("headers" in data) {
+        if ("values" in data) {
+          // All rows must contain the same number of values
+          const length = data["headers"].length;
+          const validTypes = ["string", "number", "boolean", "undefined"];
+          for (const row of data["values"]) {
+            if (row.length !== length) {
               return ".error4";
             }
+            for (const value of row) {
+              if (value !== null && !validTypes.includes(typeof value)) {
+                return ".error5";
+              }
+            }
           }
+          return data;
         }
-        return data;
+        return ".error3"
       }
       return ".error2";
     }
@@ -96,10 +99,10 @@ const getData = (string) => {
 };
 
 const flashError = (errorClass) => {
-  const errors = [".error1", ".error2", ".error3", ".error4"];
+  const errors = [".error1", ".error2", ".error3", ".error4", ".error5"];
   for (const error of errors) {
     if (errorClass !== error) {
-      $(error).css("color", "rgb(41, 209, 41)"); // green
+      $(error).css("color", "rgb(25, 255, 25)"); // green
     } else {
       $(error).css("color", "rgb(250, 83, 83)"); // red
       break;
@@ -125,14 +128,48 @@ const clearErrors = () => {
   $("#usage span").css("color", "");
 };
 
+const enableSubmit = (enable) => {
+  setTimeout(() => {
+    if (enable) {
+      $("#submit").removeAttr("disabled");
+      console.log("enabling")
+    } else {
+      $("#submit").prop("disabled", "true");
+      console.log("disabling")
+    }
+  }, 10)
+}
+
 $(document).ready(function() {
 
   const instructions = $("#instructions");
   const form = $("#data-form");
   const inputField = $("#data-form input");
+  let validData = false;
+
+  // Dynamically check for table data errors
+  inputField.on("input", function() {
+    clearErrors();
+    const formData = inputField.val();
+    if (formData.length > 0) {
+      const data = getData(formData);
+      if (typeof data === "string") {
+        enableSubmit(false);
+        return flashError(data);
+      } else {
+        $("#usage .error").css("color", "rgb(25, 255, 25)");
+        validData = true;
+        enableSubmit(true);
+      }
+    } else {
+      enableSubmit(false);
+    }
+  })
 
   form.on("submit", function(event) {
+
     event.preventDefault();
+    if (!validData) return;
 
     // Clear all errors
     clearErrors();
@@ -144,11 +181,6 @@ $(document).ready(function() {
     const formData = inputField.val();
     if (formData.length < 1) return;
     const data = getData(formData);
-    if (typeof data === "string") {
-      return flashError(data);
-    } else {
-      $("#usage .error").css("color", "rgb(9, 158, 9)");
-    }
 
     // Display results
     $("#resultCode").append(visualize(data));
@@ -169,7 +201,7 @@ $(document).ready(function() {
 
   });
 
-  $("clear").on("click", function() {
+  $("#clear").on("click", function() {
     clearForm();
     clearErrors();
   });
