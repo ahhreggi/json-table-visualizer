@@ -171,9 +171,6 @@ $(document).ready(function() {
     event.preventDefault();
     if (!validData) return;
 
-    // Clear all errors
-    clearErrors();
-
     // Hide result
     $("#resultCode").empty();
     showElement($("#result"), false);
@@ -197,7 +194,6 @@ $(document).ready(function() {
     showElement($("#result"), false);
     showElement($("#back-btn"), false);
     $("#resultCode").empty();
-    clearErrors();
 
   });
 
