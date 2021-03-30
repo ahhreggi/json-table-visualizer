@@ -76,12 +76,15 @@ const getData = (string) => {
     if (typeof data === "object") {
       if ("headers" in data) {
         const testHeader = Object.values(data.headers)[0];
-        if ((Array.isArray(data.headers) && data.headers.length < 1) || (!Array.isArray(data.headers) && testHeader && testHeader.length < 1)) {
+        // Headers must be non-empty
+        if ((Array.isArray(data.headers) && data.headers.length < 1) ||
+          (!Array.isArray(data.headers) && testHeader && testHeader.length < 1)) {
           return ".error2";
         }
         // If there is a "values" key, the data is not nested
         const testValue = data.values ? data.values[0] : false;
-        if ("values" in data && !("rows" in data) && data.values.length > 0 && Array.isArray(testValue) && testValue.length > 0) {
+        // Values must be non-empty
+        if ("values" in data && !("rows" in data) && Array.isArray(testValue) && testValue.length > 0) {
           // All rows must contain the same number of values
           const length = data["headers"].length;
           const validTypes = ["string", "number", "boolean", "undefined"];
