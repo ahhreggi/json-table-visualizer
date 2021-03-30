@@ -124,11 +124,11 @@ const getData = (string) => {
         }
         return ".error3"; // Data must contain "values" or "rows" if nested
       }
-      return ".error2";
+      return ".error2"; // Headers must be provided
     }
-    return ".error1";
+    return ".error1"; // Data must be an object
   }
-  return ".error1";
+  return ".error1"; // JSON must be valid
 
 };
 
